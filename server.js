@@ -28,11 +28,26 @@ app.get('/login', function(request, response){
 	response.sendFile(__dirname + '/login.html')
 });
 
+app.get('/santaMonica', function(request, response){
+	db.Beaches.update({SaMoLikes: 1}, {where: {id: 1}});
+	response.sendFile(__dirname + '/santaMonica.html');
+	//response.sendFile(__dirname + '/styles.css');
+});
+
+app.get('/venice', function(request, response){
+	response.sendFile(__dirname + '/venice.html')
+});
+
+app.get('/dockweiler', function(request, response){
+	response.sendFile(__dirname + '/dockweiler.html')
+});
+
+
 app.post('/yourProfile', function(request, response){
 	
 	if(request.body.Lusername && request.body.Lpassword){
 		if(request.body.Lusername.length >= 3 && request.body.Lpassword.length >= 3){
-			db.findAll({where: {username: request.body.Lusername}}).then(function(matches){
+			db.User.findAll({where: {username: request.body.Lusername}}).then(function(matches){
 				 if(matches.length === 0){
 				 		response.redirect('/login');
 				 }
@@ -47,12 +62,14 @@ app.post('/yourProfile', function(request, response){
 	}
 
 	if(request.body.username && request.body.password){
-		db.findAll({where: {username: request.body.username}}).then(function(matches){
+		db.User.findAll({where: {username: request.body.username}}).then(function(matches){
 			if(matches.length > 0){
 				response.redirect('/signup');
 			} else {
 					if(request.body.username.length >= 3 && request.body.password.length >= 3){
-						db.create({username: request.body.username, password: request.body.password });
+						db.User.create({username: request.body.username, password: request.body.password,
+							likesSaMo: "off", dislikesSaMo: "off", likesVenice: "off",
+							dislikesVenice: "off", likesDockweiler: "off", dislikesDockweiler: "off" });
 						response.sendFile(__dirname + '/yourProfile.html');
 					} else {
 						response.redirect('/signup');

@@ -5,11 +5,43 @@ var sequelize = new Sequelize ('daniel', 'student', 'ilovetesting', {
 	dialect: 'postgres'
 });
 
+var Tables = {
 
-var User = sequelize.define('user', {
-	username: Sequelize.STRING,
-	password: Sequelize.STRING
+  User: sequelize.define('user', {
+		username: Sequelize.STRING,
+		password: Sequelize.STRING,
+		likesSaMo: Sequelize.STRING,
+		dislikesSaMo: Sequelize.STRING,
+		likesVenice: Sequelize.STRING,
+		dislikesVenice: Sequelize.STRING,
+		likesDockweiler: Sequelize.STRING,
+		dislikesDockweiler: Sequelize.STRING
+	}),
+
+  Beaches: sequelize.define('beach', {
+		SaMoLikes: Sequelize.INTEGER,
+		SaMoDislikes: Sequelize.INTEGER,
+		VeniceLikes: Sequelize.INTEGER,
+		VeniceDislikes: Sequelize.INTEGER,
+		DockweilerLikes: Sequelize.INTEGER,
+		DockweilerDislikes: Sequelize.INTEGER 
+	})
+
+}
+
+Tables.Beaches.count().then(function(c){
+	if(c === 0){
+		Tables.Beaches.create({
+			SaMoLikes: 0,
+			SaMoDislikes: 0,
+			VeniceLikes: 0,
+			VeniceDislikes: 0,
+			DockweilerLikes: 0,
+			DockweilerDislikes: 0 
+		});
+	}
 });
+
 
 
 
@@ -21,4 +53,4 @@ sequelize.sync({logging: console.log}).then(function(){
 	
 });
 
-module.exports = User;
+module.exports = Tables;
